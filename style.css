@@ -1,0 +1,33 @@
+.main-row{
+    width: 100vw;
+    display: inline-block;
+    float: left;
+}
+.content-container{
+    width: 100%;
+}
+.content-row{
+    width: 90%;
+    margin-left: 5%;
+}
+.content-row-large{
+    height: 40vh;
+}
+
+.content-row-col{
+    width: 50%;
+    display: inline-block;
+    float: left;
+}
+.update-coeff{
+    width: 30px;
+    color: blue;
+    text-align: center;
+    margin-right: 3px;
+}
+.update-intv{
+    width: 30px;
+    color: greenyellow;
+    text-align: center;
+    margin-right: 3px;
+}
