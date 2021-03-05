@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!--
+        References: 
+        1) James Stewart - Single Variable Calculus, Early Transcendentals
+        2) https://web.stanford.edu/group/sisl/k12/optimization/MO-unit2-pdfs/2.7global1testpoints.pdf
+        3) Mathematics for Machine learning - Marc Peter Deisenroth, A. Aldo Faisal, Cheng Soon Ong
+        4) Thomas' - Calculus
+        5) https://math.libretexts.org/Bookshelves/Calculus/Map%3A_University_Calculus_(Hass_et_al)/3%3A_Differentiation/3.11%3A_Linearization_and_Differentials
+
+    -->
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mathematical Optimization for Machine Learning</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-dragdata@latest/dist/chartjs-plugin-dragdata.min.js"></script>
+</head>
+<body>
+    <div class="main-row">
+        <div class="title-container">
+            <div id="title-wrapper">
+                <h2 id="Title">Mathematical Optimization for Machine Learning</h2>
+                <h4>By: Nick Sebasco</h4>
+            </div>
+            
+        </div>
+    </div>
+    <div class="main-row">
+        <div class="content-container">
+
+            <div class="content-definition">
+                
+                <div class="figure-container-small figure-cover">
+                    <span class="quote">"Machine intelligence is the last invention that humanity will need to create" - Nick Bostrom</span>
+                    <br>
+                    <br>
+                    <img src="assets/cover-2.jpeg" alt="">
+                    <br>
+                    <span class="figure-caption">Figure: Finding the steepest descent down a 3-D surface.</span>
+                </div>
+            </div>
+            <div class="content-row">
+                <h2><span>1.</span> Optimization, Minima & Maxima</h2>
+                <p class="text-large">
+                    <span class="primary-definition">Optimization</span> is the proccess of finding the best way to do something.  Often times optimization problems can be reduced to finding the <span>minimum</span>
+                    or <span>maximum</span> of some objective function <i>f(x)</i>. 
+                </p>
+
+                <div class="content-row-col content-row-col-l">
+                    <div class="chart-outer-wrapper">
+                        <div class="chart-container" style="height:30vh; width:30vw">
+                            <canvas id="figure1"></canvas>
+                            <span class="figure-caption">Figure 1: Minima and Maxima of some function <i>f</i>.</span>
+                        </div>
+                        
+                    </div>
+                    <div class="chart-outer-wrapper">
+                        <div class="chart-container" style="height:30vh; width:30vw">
+                            <canvas id="figure2"></canvas>
+                            <span class="caption">Figure 2: On the closed interval <i>[0, 4]</i> the continuous function <i>f(x) = -(x - 2)&sup2; </i> has extreme values.</span>    
+                        </div>
+                    </div>
+                    <div class="chart-outer-wrapper">
+                        <div class="chart-container" style="height:30vh; width:30vw">
+                            <canvas id="figure3"></canvas>
+                            <span class="caption">Figure 3: Violation of the extreme value theorem, because <i>f</i> is not continuous.</span> 
+                        </div>
+                    </div>
+                </div>
+                <div class="content-row-col content-row-col-r">
+                    <div class="chart-outer-wrapper">
+                        <div class="content-definition">
+                            <span class="primary-definition">Absolute minimum</span> - Let <i>c</i> be a point in the domain of a function <i>f</i>, then <i>f(c)</i>  is the absolute minimmum if <i>f(c)</i>  &leq; <i>f(x)</i>  for all <i>x</i> in the domain.
+                        </div>
+                        
+                        <br>
+                        <div class="content-definition">
+                            <span class="primary-definition">Absolute maximum</span> - Let <i>c</i> be a point in the domain of a function <i>f</i>, then <i>f(c)</i>  is the absolute minimmum if <i>f(c)</i>  &GreaterEqual;; <i>f(x)</i>  for all <i>x</i> in the domain.
+                        </div>
+                        
+                        <br>
+                        <div class="content-definition">
+                            <span class="primary-definition">Local minimum</span> - Let <i>c</i> be a point in the domain of a function <i>f</i>, then <i>f(c)</i>  is the local minimmum if <i>f(c)</i>  &leq; <i>f(x)</i>  when <i>x</i> in the domain, and <i>x</i> is near <i>c</i>.
+                        </div>
+                        <br>
+                        <div class="content-definition">
+                            <span class="primary-definition">Local maximum</span> - Let <i>c</i> be a point in the domain of a function <i>f</i>, then <i>f(c)</i>  is the local maximum if <i>f(c)</i>  &GreaterEqual; <i>f(x)</i>  when <i>x</i> in the domain, and <i>x</i> is near <i>c</i>.
+                        </div>
+                        <br>
+                        <div class="content-definition">
+                            <span class="primary-definition">The Extreme Value Theorem</span> - Functions that are continuous on a closed interval always attain extreme values (absolute minima/ maxima).
+                        </div>
+                        <br>
+                        <div class="content-definition">
+                            <h3>So we know whether or not extrema exist, but how do we find them?</h3>
+                        </div>
+                        <br>
+                        <div class="content-definition">
+                            <span class="primary-definition">Critical number</span> - Given some value <i>c</i> in the domain of a function <i>f</i>.  The critical numbers of <i>f</i>
+                            are such that <i>f'(c) = 0</i> or <i>f'(c) = undefined</i>
+                        </div>
+                        <br>
+                        <div class="content-definition">
+                            <span class="primary-definition">Fermat's theorem</span> - If a function <i>f</i> has a minimum or maximum at a value <i>c</i>
+                            in the domain of <i>f</i>, and the derivate of <i>f</i> at <i>c</i> exists, then the derivative of <i>f</i>
+                            at <i>c</i> is zero.  In otherwords, if <i>f</i> has an extreme value at <i>c</i> then <i>c</i> is a critical
+                            number.
+                        </div>
+                        <br>
+                        <div class="content-definition">
+                                Unfortunately, just because <i>c</i> is a critical number, that does not mean 
+                                a maximum or minimimum exists there!  Moreover, even if it is a minimum or maximum how 
+                                do we know whether it is a local or absolute extremum?
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="content-row content-definition">
+                <h3>The Closed Interval Algorithm - finding absolute extrema</h3>
+
+                <div class="closed-interval-wrapper">
+                    <p class="text-large">
+                        You can update the polynomial coefficients and closed interval and the extrema will auto compute!
+                    </p>
+                <ol>
+                    <li>Choose a function <i>f</i></li>
+                    <br>
+                    <span>Example: Let <i>f</i> be a degree 3 polynomial</span> <input id="coeff-A" class="update-coeff" type="text" value="2">x&sup3; + <input id="coeff-B" class="update-coeff" type="text" value="5">x&sup2; + <input id="coeff-C" class="update-coeff" type="text" value="2">x + <input id="coeff-D" class="update-coeff" type="text" value="5">
+                    <br>
+                    Let <i>D</i> be the closed interval [ <input type="text" id="intv-A" class="update-intv" value = "-1">, <input type="text" id="intv-B" class="update-intv" value="1">  ] on which <i>f</i> is defined.
+                    <br>
+                    <br>
+                    <li>Validate against the <a href="">Extreme Value Theorem</a></li>
+                    <br>
+                    <li>Find critical values of <i>f</i> in <i>D</i></li>
+                    <br>
+                    <i>f'(x) = </i><i class="cia-fprime">6x&sup2;+x+2</i>
+                    <br>
+                    <i class="cia-fprime">6x&sup2;+x+2</i> = 0
+                    <br>
+                    <i class="poly-res">x = , x = </i>
+                    <br>
+                    <br>
+                    <li>Compute <i>f(x)</i> where x is all critical numbers and the interval endpoints.</li>
+                    <br>
+                    <table id="critical-value-table">
+                        <tbody>
+                            <tr class="crtical-value-table-tdh">
+                                <td>Critical Point (c)</td>
+                                <td>f(c)</td>
+                                <td>Within interval</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </ol>
+                </div>
+            </div>
+            <div class="content-row content-definition">
+                <h3>The Unboundedness Problem</h3>
+                <div class="figure-container-small">
+                    
+                    <img src="assets/unbounded_ceiling.png" alt="">
+                    <br>
+                    <span class="figure-caption">Figure: Bounding a boundless curve.</span>
+                </div>
+                <br>
+                So what if we fail the extreme value theorem; namely our objective function lies on an open interval?
+                Create an artificial cieiling for the objective function.  This will constrain the function both vertically and horizontally.  The consequence
+                of this heuristic is that we might choose the wrong cieling which could result in missing the extrema.
+                <br>
+            </div>
+            <div class="content-row content-definition">
+                <h2><span>2.</span> Concavity & Derivative Testing</h2>
+                <div class="figure-container-small">
+                    <!-- Image Source: https://www.google.com/url?sa=i&url=https%3A%2F%2Fbrilliant.org%2Fwiki%2Finflection-points%2F&psig=AOvVaw3msnXmP8CukyZ9rRZjOudP&ust=1614973412609000&source=images&cd=vfe&ved=0CAIQjRxqFwoTCJC2nJCzl-8CFQAAAAAdAAAAABAK -->
+                    <img src="assets/concavity.png" alt="">
+                    <br>
+                    <span class="figure-caption">Figure: Finding the inflection point on a curve.</span>
+                </div>
+                <p>
+                    <div class="content-definition">
+                        <span class="primary-definition">Concave up</span> - <i>f''(x) &gt; 0</i> for all <i>x</i> in some interval <i>I</i>.
+                    </div>
+                    <br>
+                    <div class="content-definition">
+                        <span class="primary-definition">Concave down</span> - <i>f''(x) &lt; 0</i> for all <i>x</i> in some interval <i>I</i>.
+                    </div>
+                    <br>
+                    <div class="content-definition">
+                        <span class="primary-definition">Inflection Point</span> - A point on a continuous curve such that the curve switches from concave up to concave down.
+                    </div>
+                    <br>
+                    <div class="content-definition">
+                        <span class="primary-definition">Second Derivative Test</span> - If <i>f'(x) = 0</i> and <i>f''(x) &gt; 0</i>, then <i>f</i> has a local minimum at x; conversely, if <i>f''(x) &lt; 0</i>
+                        then <i>f</i> has a local maximum at <i>x</i>.
+                    </div>
+                    <br>
+                    <div class="content-definition">
+                        <span class="primary-definition">The First Derivative Test - finding local extrema</span>
+                        <a href="">Increasing function</a> - <i>f'(x) &gt; 0 on some interval.</i>
+                        <a href="">Decreasing function</a> - <i>f'(x) &lt; 0 on some interval.</i>
+                    </div>
+                    <ul>
+                        <li><i>f'</i> changes from positive to negative at a point <i>c</i>, then <i>f</i> has a local maximum at <i>c</i>.</li>
+                        <li><i>f'</i> changes from negative to positive at a point <i>c</i>, then <i>f</i> has a local minimum at <i>c</i>.</li>
+                        <li><i>f'</i> is positive to the left and right of <i>c</i>, or <i>f'</i> is negative to the left and right of <i>c</i>, then no local extrema exist at c.</li>
+                    </ul>
+                    <h4>So how is this related to optimization?</h4>
+                    Recall that often times optimization problems can be restated as finding the minimum or maximum of some objective function.  The previous theorems and definitions
+                    show how differentiation can be exploited to find both global and local extrema.  Since Optimization &rarr; Finding a minimum/ maximum &rarr; differention, then by transitivity it 
+                    can be seen that optimzation problems can be solved using differential calculus. 
+                </p>
+            </div>
+            <div class="content-row content-definition">
+                <h2><span>3.</span> Applications of Optimization</h2>
+                <h4>Example 1:</h4>
+                <p>Imagine we have two positive numbers <i>a</i> and <i>b</i> such that <i>a + b = c</i>, where <i>c</i>
+                is some other positive number.  What is the minimum sum of the squares of <i>a</i> and <i>b</i>? in other words
+                solve: <i>min[a&sup2; + b&sup2;]</i>
+                </p>
+                <div class="code-container-math">
+                    <code>
+                        1) a + b = c &rarr; a = c - b | Note, since a & b are positive a and b are constrained to the closed interval [0, c]
+                        <br>
+                        2) S(a, b) = a&sup2; + b&sup2; [minimize S]
+                        <br>
+                        S(b) = (c - b)&sup2; + b&sup2;
+                        <br>
+                        S'(b) = -2(c - b) + 2b = 4b - 2c
+                        <br>
+                        Find the critical number, S'(b) = 0 &rarr; 4b - 2c = 0 
+                        <br>
+                        b = c/2
+                        <br>
+                        Plugging b into 1) and solving for a:
+                        <br>
+                        a + c/2 = c &rarr; a = c/2
+                        <br>
+                        So the optimal solution is: (a, b) = (c/2, c/2)
+                    </code>
+                </div>
+                
+                <h4>Example 2:</h4>
+                <p>
+                    Given a rectangular poster of fixed area <i>A</i> with margins on every side: margin left (M<sub>L</sub>), margin right (M<sub>R</sub>), margin top (M<sub>T</sub>), and margin bottom (M<sub>B</sub>).
+                    find the dimensions of the poster such that the printable interior area (P<sub>A</sub>) is maximized.
+                </p>
+                <div class="inner-col col-l">
+                    <div class="code-container-math">
+                        <code>
+                            let S = M<sub>R</sub> + M<sub>L</sub>
+                            <br>
+                            let B = M<sub>T</sub> + M<sub>B</sub>
+                            <br>
+                            A = w * h &rarr; h = A/ w
+                            <br>
+                            P<sub>A</sub>(w, h) = (w - S) * (h - B)
+                            <br>
+                            P<sub>A</sub>(w) = (w - S) * (A/ w - B)
+                            <br>
+                            = A - w * B - (S * A)/ w + S * B
+                            <br>
+                            P<sub>A</sub>'(w) = -B + (S * A)/ w&sup2;
+                            <br>
+                            0 = -B + (S * A)/ w&sup2;
+                            <br>
+                            w =  SQRT((S * A)/ B)
+                        </code>
+                    </div>
+                    
+                </div>
+                <div class="inner-col col-r">
+                    <div id="example-2-poster">
+                        <div></div>
+                    </div>
+                </div>
+            </div>
+            <div class="content-row content-definition">
+                <h2><span>4.</span> Numerical & Programmatic Derivatives</h2>
+                <!-- 
+                    Source: http://www2.math.umd.edu/~dlevy/classes/amsc466/lecture-notes/differentiation-chap.pdf
+                -->
+                <h3 class="sub-header">Why would we want to approximate a derivate using a numerical method?</h3>
+
+                <ol>
+                    <li>If we have some data set: \(D = \{(x_0, f(x_0)), (x_1, f(x_1)) ...\}\), then we only know the the underlying target function
+                        evaluated at particular x-values.  Since the target function itself is unknown, symbolic analytic differentiation is not feasible. </li>
+                    <li>We are completely unaware of the underlying target function but still need to study rates of change. </li>
+                    <li>An exact formula may be present, but computing the derivative is too computationally expensive.</li>
+                </ol>
+                <h3 class="sub-header">The Finite Difference Approximation</h3>
+     
+                $$ f'(x) \simeq {{f(x + h) - f(x)} \over h} $$
+                
+                Notice that if we take the limit as h approaches 0, then we have the exact definition of the derivative.
+                <h3 class="sub-header">3 Types of Finite Differences</h3>
+                <ol>
+                    <li>
+                        Forward Difference - Given the current data point \((x_i, f(x_i)) \) such that you are trying to approximate \(f'(x_i)\), take
+                        the next closest future data point \((x_{i+1}, f(x_{i+1})) \), the slope of the secant line 
+                        between these data points approximates the derivative \(f'(x_i)\).
+
+                        $$ f'(x) \simeq {{f(x_{i+1}) - f(x_{i})} \over x_{i+1} - x_{i}} $$
+
+                    </li>
+                    <li>
+                        Backward Difference - Given the current data point \((x_i, f(x_i)) \) such that you are trying to approximate \(f'(x_i)\), take
+                        the next closest previous data point \((x_{i-1}, f(x_{i-1})) \), the slope of the secant line 
+                        between these data points approximates the derivative \(f'(x_i)\).
+
+                        $$ f'(x) \simeq {{f(x_{i}) - f(x_{i - 1})} \over x_{i} - x_{i - 1}} $$
+
+                    </li>
+                    <li>
+                        Central Difference - Given the current data point \((x_i, f(x_i)) \) such that you are trying to approximate \(f'(x_i)\), take
+                        the next closest previous data point \((x_{i-1}, f(x_{i-1})) \) and the next closest future data point \((x_{i+1}, f(x_{i+1})) \), the slope of the secant line 
+                        between the next closest previous data point and next closest future data point approximates the derivative \(f'(x_i)\).
+
+                        $$ f'(x) \simeq {{f(x_{i+1}) - f(x_{i - 1})} \over x_{i+1} - x_{i - 1}} $$
+
+                    </li>
+                </ol>
+                <br>
+                <h3 class="sub-header">Example Using the Central Difference Method:</h3>
+                <div class="code-container-math">
+                    \(D = \{(-2, 4), (-1, 1), (0, 0), (1, 1), (2, 4)\}\)
+                    <br>
+                    \(f'(-1) \simeq \) ?
+                    <br>
+                    <span class="code-comment-math">The underlying target function used to generate data: \(f(x) = x^2\)</span>
+                    <br>
+                    \(f'(x) = 2x,  f'(-1) = -2\)
+                    <br>
+                    <span class="code-comment-math">Now assume we have no idea what the underlying target function is and we wish to calculate the \(f'(-1)\)</span>
+                    <br>
+                    <span class="code-comment-math">According to the central difference formula:</span>
+                    <br>
+                    \(f'(x) \simeq {{f(x_{i+1}) - f(x_{i - 1})} \over x_{i+1} - x_{i - 1}}\)
+                    <br>
+                    \(f'(-1) = (0 - 4)/ (0 + 2) = -2\)
+                    <br>
+                    <span class="code-comment-math">Thus we were able to calculate the derivative at x=-1 with zero error.</span>
+                    <br>
+                    <span class="code-comment-math">In general finite difference approximations will produce error!</span>
+                </div>
+
+                <h3 class="sub-header">Central Difference Differentiation in Python</h3>
+                <p>
+                    Python's <a href="https://numpy.org/">Numpy</a>  module has a function called gradient which implements the central difference method.
+                    I have included an example below:
+                </p>
+
+                <div class="code-container">
+                    <code>
+                        
+                        <span class="code-keyword">import</span> numpy <span class="code-keyword">as</span> np
+                        <br>
+                        
+                        <span class="code-variable">x</span> = np.linspace(<span class="code-number">0</span>,<span class="code-number">4</span>,<span class="code-number">5</span>) <span class="code-comment code-inline"># [0, 1, 2, 3, 4]</span>
+                        <br>
+                        <span class="code-variable">dx</span> = x[<span class="code-number">1</span>]-x[<span class="code-number">0</span>]
+                        <br>
+                        <span class="code-variable">y</span> = x**<span class="code-number">2</span> + <span class="code-number">1</span>
+                        <br>
+                        <span class="code-variable">dydx</span> = np.gradient(y, dx)
+                        <br>
+                        print(dydx) <span class="code-comment code-inline"># [1, 2, 4, 6, 7]</span>
+                    </code>
+                </div>
+    
+            </div>
+            <div class="content-row content-definition">
+                <h2><span>5.</span> Basic Differentiation Techniques</h2>
+                <ol>
+                    <li><h4>Product Rule</h4>
+                    <br>
+                    When \(u, v\) , are differentiable at \(x\), so is the product \(uv\):
+                    $$ {d \over dx}(uv) = {dv \over dx}(u) + {du \over dx}(v)$$
+                    <br>
+                    <h5> Example: Product Rule</h5>
+                    <div class="code-container-math">
+                        \(u(x) = x^3 - cos(x)\)
+                        <br>
+                        \(v(x) = {1 \over x} + 19\)
+                        <br>
+                        \(f'(uv) = v'(x)(x^3 - cos(x)) + u'(x)({1 \over x} + 19)\)
+                        <br>
+                        \(v'(x) = {d \over dx}({1 \over x} + 19) = {-1 \over x^2}\)
+                        <br>
+                        \(u'(x) = {d \over dx}(x^3 - cos(x))\) = \(3 x^2 + sin(x)\)
+                        <br>
+                        \(f'(uv) = ({-1 \over x^2})(x^3 - cos(x)) + (3 x^2 + sin(x))({1 \over x} + 19) \)
+                    </div>
+                    </li>
+                    <li><h4>Chain Rule</h4>
+                    <br>
+                    Given \(f(z)\) differentiable at some point \(z = g(x)\) and \(g(x)\) is differentiable
+                    at x, then \(f(g(x))\) is differentiable at x and:
+                    $$ (f \circ g)'(x) = f'(g(x))g'(x)$$
+                    <h5> Example: Chain Rule</h5>
+                    <div class="code-container-math">
+                        \(h(x) = e^{x^3 - x}\)
+                        <br>
+                        \(h(x) = f(g(x))\), where \(f(x) = e^x\) and \(g(x) = x^3 - x\)
+                        <br>
+                        \(f'(g(x)) = e^{x^3 - x}\)
+                        <br>
+                        \(g'(x) = 3x^2 - 1\)
+                        <br>
+                        <span class="code-comment-math">Thus by the chain rule:</span>
+                        <br>
+                        \(h'(x) = (3x^2 - 1)e^{x^3 - x} \)
+                 
+                    </div>
+                    </li>
+                    <li>
+                        <h4>Linearization</h4>
+                        <br>
+                        For a differentiable function \(f\), the equation of the tangent line to  \(f\) at \(x = a\) can be
+                        used to approximate \(f(x)\) for some \(x\) near \(a\):
+                        $$ L(x) = f(a) + f'(a)(x - a) $$
+                        The function \(L\) is called the linearization of \(f\) at \(x = a\)
+                        <h5> Example: Linearization</h5>
+                        <div class="code-container-math">
+                            <span class="code-comment-math">Given:</span>
+                            <br>
+                            \(f(x) = \sqrt[4]{x} + {x \over 4}^2\)
+                            <br>
+                            <span class="code-comment-math">Find the linearization at \(x = 16\), then approximate \(f(16.09)\)</span>
+                            <br>
+                            \(f(16) = {16}^{1 \over 4} + 4^2 = 18\)
+                            <br>
+                            \(f'(x) ={1 \over 4}x^{-3 \over 4} + {x \over 8}\)
+                            <br>
+                            \(f'(16) ={1 \over 4}16^{-3 \over 4} + {16 \over 8} = {1 \over (4){2}^3} + 2 = {1 \over 32} + {64 \over 32} = {65 \over 32}\)
+                            <br>
+                            \(L(x) = 18 + {65 \over 32}(x - 16)\)
+                            <br>
+                            \(L(16.09) = {65 \over 32}({9 \over 10}) = 18 + {117 \over 64}\)
+                        </div>
+                    </li>
+                </ol>
+
+            </div>
+            <div class="content-row content-definition">
+                <h2><span>6.</span> Partial Derivatives & Gradients</h2>
+                <p class="text-large">An extension of differential calculus to functions with more than one variable.</p>
+                <div class="content-definition">
+                    <span class="primary-definition">Multivariate function </span> 
+                    - A multivariate function \( f: \mathbb{R}^n \longrightarrow \mathbb{R}	\) has a domain which consists of <strong>n-tuples</strong>, where \( n > 1 \).
+
+                        $$  f(x_1, x_2, ..., x_n): \mathbb{R}^n \longrightarrow \mathbb{R} $$  
+                </div>
+                <div class="content-definition">
+                    <span class="primary-definition">Partial derivative </span> 
+                    - computing the derivative of a multivariate function by holding all variables constant except one.
+
+                    $$ {\partial f \over \partial x_i} = lim \text{ h}\ \rightarrow 0 \text{ }{{f({x_1}, ...,x_{i-1}, x_i + h, x_{i+1}, ..., x_n) - f(x)} \over h} $$
+
+                    <div class="code-container-math">
+                        \(f(x, y) = 2x + y\)
+                        <br>
+                        \({\partial f \over \partial x} = ?\)
+                        <br>
+                        <span class="code-comment-math">Holding y constant:</span>
+                        <br>
+                        \({\partial \over \partial x} 2x + constant  = 2\)
+                    </div>
+                    <br>
+                </div>
+                <div class="content-definition">
+                    <span class="primary-definition">Directional Derivative </span> 
+                    For a physical description of the directional derivative imagine
+                    \(Z = f(x, y)\) is the elevation at some x, y location on a mountain.  Then \(f(x*, y*)\) = the 
+                    elevation at point \(x*, y*\) and the directional derivative represents the instanataneous rate 
+                    of change of the elevation @ \(x*, y*\) going off in some direction u, where u is a vector of the
+                    form \(u = u_{1}i + u_{2}j\).  the i component of the vector
+                    u represents traversal in the x direction and the j component represents traversal in the y direction
+                </div>
+                <br>
+                <div class="content-definition">
+                    <span class="primary-definition">Gradient </span> 
+                    - The generalization of the derivative to multivariate functions.  The gradient is the collection of the partial derivatives.  A \( 1 x n\) dimensional row vector.
+
+                        $$  \nabla_xf = {df \over dx} = [{\partial f(x) \over \partial x_1}, {\partial f(x) \over \partial x_2}, ..., {\partial f(x) \over \partial x_n}] $$  
+                </div>
+            </div>
+            <div class="content-row content-definition">
+                <h2><span>6.</span> Automatic Differentiation & Back Propagation</h2>
+                <p>Back propagation is a special case of automatic differentiation which is a numerical method
+                    (different from symbolically computing the gradient or using finite differences) for evaluating the gradient of a function by working with intermediate
+                    values and applying the chain rule.
+                </p>
+                <h3>Back Propagation Video</h3>
+                <div class="video-wrapper">
+                    <iframe width="560" height="315" src="https://www.youtube.com/embed/Ilg3gGewQ5U" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+
+            </div>
+            <div class="content-row content-definition">
+                <h2 class="primary-header"><span>7.</span> Gradient Descent & Convex Optimization</h2>
+
+                <p>
+                    <h3 class="sub-header">Gradient Descent</h3>
+                    <div class="figure-container">
+                        <!-- Image Source: https://www.sabinasz.net/deep-learning-from-scratch-iv-gradient-descent-and-backpropagation/ -->
+                        <img src="assets/gradient-descent-mountain.png" alt="">
+                        <br>
+                        <span class="figure-caption">Figure: Finding the steepest descent down a mountain.</span>
+                    </div>
+                    <br>
+                    Attempts to find the minimum of some real value function <i>f(x)</i>.  The
+                    assumptions are made that <i>f</i> is differentiable and we cannot find a closed form analytic 
+                    solution.  Recall that the gradient points in the direction of steepest descent.  Gradient descent
+                    exploits the fact that f(x_0) decreases fastest if it moves in the direction of the negative gradient.
+                    Gradient descent can be slow as it approaches the minimum.                
+                </p>
+                <p>
+                    <h3 class="sub-header">Learning rate</h3>
+                    <div class="figure-container">
+                        <!-- Image Source: https://www.sabinasz.net/deep-learning-from-scratch-iv-gradient-descent-and-backpropagation/ -->
+                        <img src="assets/learning-rate.png" alt="">
+                        <br>
+                        <span class="figure-caption">Figure: The small learning rate descends slowly, while the large learning rate may not converge!</span>
+                    </div>
+                    <br>
+                    Also called the "step size", if a step size is chosen that is too  small, convergence will be slow.
+                    If the value is too large then the gradient descent algorithm might not converge properly.  Adaptive gradient methods 
+                    update the learning rate depending on the atrributes of the function. A simple adaptive gradient heuristic:
+                    <ol>
+                        <li>If the function value increases after the gradient step, undo the step and try a lower step-size</li>
+                        <li>If the function value decreases after the gradient step, undo the step and try a larger step-size</li>
+                    </ol>
+                </p>
+                <p>
+                    <h3 class="sub-header">Gradeint Descent With Momentum</h3>
+                    <div class="figure-container-small">
+                        <!-- Image Source: Nick Sebasco - Google Docs -->
+                        <img src="assets/gradient_descent_momentum.png" alt="">
+                        <br>
+                        <span class="figure-caption">Figure: Notice how there are fewer oscillations using gradient descent with momentum as the minimum is approached.  This equates to faster convergence.</span>
+                    </div>
+                    <br>
+                    If regions of the optimization surface are not scaled well, gradient descent can be very slow.
+                    By introducing memory into the algorithm so that the state from the previous iteration can be recalled,
+                    the time costly oscillations that occur near the minimum are dampended and consequently convergence happens
+                    more quickly.  Gradient descent with momemtum is also useful for approximations of the gradient, becuase it 
+                    is able to average out noisy estimates of the gradient.
+
+                </p>
+                <p>
+                    <h3 class="sub-header">Stochastic Gradient Descent</h3>
+                    <div class="figure-container-small">
+                        <!-- Image Source: https://datascience-enthusiast.com/DL/Optimization_methods.html -->
+                        <img src="assets/gd_v_sgd.png" alt="">
+                        <br>
+                        <span class="figure-caption">Figure: Notice how gradient descent always traverses the local minima; whereas stochastic gradeint descent oscillates around the minima.</span>
+                    </div>
+                    
+                    <br>
+                    Computing the gradient can be very expensive and thus approximating a gradient is sufficient as long as it is 
+                    pointing in approximately the same direction.  Stochastic refers to the fact that the true gradient is unknown
+                    and that we only have a noisy approximation.  This is an example of a batch optimization method, which means the 
+                    entire training dataset should be used.  Approximate gradients should be used in practice because of implementation constraints,
+                    namely CPU/ GPU memory & computational running time.
+                </p>
+                <p>
+                    <h3 class="sub-header">Convexity</h3>
+                    <div class="figure-container-small">
+                        <!-- Image Source: Nick Sebasco in Google Docs -->
+                        <img src="assets/convex_set.png" alt="">
+                        <br>
+                        <span class="figure-caption"><i>Figure: \(E_1\) is convex, while \(E_2\) is not convex.</i></span>
+                    </div>
+                    <br>
+                    <div class="content-definition">
+                        <span class="primary-definition"><strong>Convex Sets <i>C</i></strong>
+                            $$ \forall x, y \in C \text{ and }\ \forall \lambda \in \mathbb{R} \text{ such that }\ 0 \leq \lambda \leq 1 \text{, }\ \lambda * x + (1 - \lambda) * y \in C $$
+                            </span>
+                    </div>
+                    <br>
+                    <div class="content-definition">
+                        <span class="primary-definition">Convex Functions </span> 
+                        - A convex function \( f_{cvx}: \mathbb{R}^D \longrightarrow \mathbb{R}	\) has a domain which is a convex set!  The function \( f_{cvx}\) is convex if,
+                        \(\forall x, y\) in the domain of \( f_{cvx}\) and \(\forall \lambda \in \mathbb{R} \text{ such that }\ 0 \leq \lambda \leq 1\) the following relating holds:  
+                            $$  f_{cvx}(\lambda * x + (1 - \lambda) * y) \leq  \lambda * f_{cvx}(x) + (1 - \lambda) *  f_{cvx}(y)$$  
+                    </div>
+                </p>
+            </div>
+            <div class="content-row content-sorces">
+                <h2 class="primary-header">Sources</h2>
+                <ol>
+                    <li>James Stewart - Single Variable Calculus, Early Transcendentals</li>
+                    <li>Thomas' - Calculus</li>
+                    <li>Mathematics for Machine learning - Marc Peter Deisenroth, A. Aldo Faisal, Cheng Soon Ong</li>
+                    <li><a href=" https://math.libretexts.org/Bookshelves/Calculus/Map%3A_University_Calculus_(Hass_et_al)/3%3A_Differentiation/3.11%3A_Linearization_and_Differentials">University Calculus: Early Transcendentals - Joel R. Hass, Maurice D. Weir, George B. Thomas</a>  </li>
+                    <li><a href="https://web.stanford.edu/group/sisl/k12/optimization/#!index.md">Mathematical Optimization - Stanford Junior University</a></li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</body>
+<script src="main.js"></script>
+</html>

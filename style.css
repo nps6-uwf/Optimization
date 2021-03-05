@@ -1,0 +1,136 @@
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@200&family=Stick&display=swap');
+body, html{
+    margin: 0;
+    overflow-x: hidden;
+}
+.quote{
+    font-family: "cairo";
+}
+.main-row{
+    width: 100vw;
+    max-width: 100vw;
+    overflow-x: hidden;
+    display: inline-block;
+    float: left;
+}
+.content-container{
+    width: 100%;
+}
+.chart-container{
+    margin: auto;
+}
+.content-row{
+    display: inline-block;
+    width: 90%;
+    margin-left: 5%;
+    margin-top: 50px;
+}
+.content-row-large{
+    height: 40vh;
+}
+#critical-value-table{
+    border: 2px solid darkcyan;
+}
+.content-row-col{
+    width: 50%;
+    display: inline-block;
+    float: left;
+}
+.update-coeff{
+    width: 30px;
+    color: blue;
+    text-align: center;
+    margin-right: 3px;
+}
+.update-intv{
+    width: 30px;
+    color: blueviolet;
+    text-align: center;
+    margin-right: 3px;
+}
+.graph-img {
+    width: 400px;
+    height: 400px;
+}
+
+.code-container{
+    background: rgb(250,250,250);
+}
+
+.code-variable {
+    color: darkblue;
+}
+.code-keyword {
+    color: blue;
+}
+.code-number {
+    color: lightseagreen;
+}
+.code-comment {
+    color: darkolivegreen;
+}   
+.code-inline {
+    margin-left: 2px;
+}   
+.code-string {
+    color: salmon;
+}
+.code-container-math{
+    background: rgb(250,250,250);
+    line-height: 2em;
+
+}
+
+.code-comment-math{
+    color: darkolivegreen;
+    font-style: italic;
+}
+.figure-container>img{
+    height: 40vh;
+    width: auto;
+}
+.figure-container-small>img{
+    width: 40vw;
+    height: auto;
+}
+.figure-caption{
+    color: #4E342E;
+    font-size: 14px;
+    font-style: italic;
+}
+.figure-container{
+    width: 100%;
+    text-align: center;
+}
+.figure-container-small{
+    width: 100%;
+    text-align: center;
+}
+#title-wrapper{
+    text-align: center;
+}
+
+.figure-cover {
+text-align: center;    
+}
+.closed-interval-wrapper{
+    width: 75%;
+    margin-left:12.5%;
+}
+closed-interval-wrapper > ol >li {
+    margin-top: 20px;
+}
+.chart-outer-wrapper{
+    display: block;
+    margin-top: 50px;
+}
+.text-large {
+    font-size: 1.33em;
+}
+.primary-definition {
+    font-weight: bold;
+    margin-top: 20px;
+}
+.video-wrapper {
+    text-align: center;
+}
